@@ -1,0 +1,23 @@
+from django.shortcuts import render
+import json as simplejson
+from django.views.decorators.csrf import csrf_exempt  
+from django.http import HttpResponse
+from .forms import userdata
+# Create your views here.
+@csrf_exempt
+def get_userdata(request):
+    username=[]
+    try:
+        if request.method == 'POST':
+	    username=request.post.get('username')
+	    gender=request.post.get('gender')
+	    age=request.post.get('age')  
+	    blood_type=request.post.get('blood_type') 
+	    emergency_number=request.post.get('emergency_number')  
+	    destination=request.post.get('destination') 
+	       	
+	
+    except:
+	print 'something wrong'
+        
+    return HttpResponse(username)
