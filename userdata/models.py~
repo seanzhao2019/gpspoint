@@ -1,8 +1,16 @@
 from django.db import models
 
 # Create your models here.
-class userdata(models.Model):
+class Userdata(models.Model):
+    user_id=models.IntegerField(primary_key=True)
     username = models.CharField(max_length=30)
-    gender = models.CharField()    
-    age = models.IntegerField()
-    emergency_number = models.IntegerField()
+    gender = models.CharField(max_length=10,null=True)    
+    age = models.IntegerField(null=True)
+    blood_type=models.CharField(max_length=6,null=True)
+    emergency_number = models.IntegerField(null=True)
+    destination=models.CharField(max_length=20,null=True)
+    
+
+    def __unicode__(self):
+        return self.username
+
