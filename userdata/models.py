@@ -21,7 +21,7 @@ class Sensordata(models.Model):
     timestamp=models.DateTimeField()
     lan=models.FloatField(null=True)
     lon=models.FloatField(null=True)
-    
+    heart_rate=models.IntegerField(null=True)
 
 #    def __unicode__(self):
 #        return self.timestamp

@@ -17,7 +17,7 @@ class Userdata(models.Model):
         return self.username
 
 class Sensordata(models.Model):
-    user=models.ForeignKey('Userdata')
+    user=models.ForeignKey('Userdata')#Userdata's Primary Key
     timestamp=models.DateTimeField()
     lan=models.FloatField(null=True)
     lon=models.FloatField(null=True)
