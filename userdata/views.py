@@ -54,7 +54,10 @@ def Get_sensordata(request):
 	    lan_list=request.POST.getlist('lan')
 	    lon_list=request.POST.getlist('lon')
 	    heart_rate_list=request.POST.getlist('heart_rate')
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9feab6ed4c2480c55945e9b6496155b94be49b64
 	  
 #calculate the length------sensordata
 	    l1=len(user_id_list)
