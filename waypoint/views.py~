@@ -1,0 +1,11 @@
+#coding:utf-8
+from django.shortcuts import render
+# Create your views here.
+from django.http import HttpResponse
+
+def index(request):
+    return render(request,"waypoint/index.html")
+
+def simple(request):
+    return render(request,"waypoint/simple.html")
+
