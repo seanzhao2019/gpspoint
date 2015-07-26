@@ -52,14 +52,15 @@ def Get_sensordata(request):
 	    user_id_list=request.POST.getlist('user_id')
 	    timestamp_list=request.POST.getlist('timestamp')
 	    lan_list=request.POST.getlist('lan')
-	    lon_list=request.POST.getlist('lon') 
+	    lon_list=request.POST.getlist('lon')
+	    heart_rate_list=request.POST.getlist('heart_rate')
 	  
 #calculate the length------sensordata
 	    l1=len(user_id_list)
 	    l2=len(timestamp_list)
 	    l3=len(lan_list)
 	    l4=len(lon_list)
-#	    l5=len(blood_type_list)
+	    l5=len(heart_rate_list)
 #	    l6=len(emergency_number_list)
 #	    l7=len(destination_list)
 	    
@@ -68,7 +69,7 @@ def Get_sensordata(request):
 	    L.append(l2)
 	    L.append(l3)
 	    L.append(l4)
-#	    L.append(l5)
+	    L.append(l5)
 #	    L.append(l6)
 #	    L.append(l7)
 	    
@@ -88,7 +89,7 @@ def Get_sensordata(request):
 	    	    get_sensordata.timestamp=timestamp_list[i]         
             	    get_sensordata.lan=lan_list[i]
             	    get_sensordata.lon=lon_list[i]
-#            	    get_sensordata.blood_type=blood_type_list[i]
+            	    get_sensordata.heart_rate=heart_rate_list[i]
 #            	    get_sensordata.emergency_number=emergency_number_list[i]
 #            	    get_sensordata.destination=destination_list[i]
 	    	    get_sensordata.save()
