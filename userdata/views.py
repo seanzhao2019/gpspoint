@@ -15,7 +15,7 @@ def Get_userdata(request):
 	    user_id_get=request.POST.get('user_id')
 	    username_get=request.POST.get('username')
 	    gender_get=request.POST.get('gender')
-	    age_get=request.POST.get('age') 
+	    birthday_get=request.POST.get('birthday') 
 	    blood_type_get=request.POST.get('blood_type') 
 	    emergency_number_get=request.POST.get('emergency_number')  
 	    destination_get=request.POST.get('destination')     	
@@ -23,7 +23,7 @@ def Get_userdata(request):
 	    update_userdata=Userdata.objects.update_or_create(user_id=user_id_get,
 							username=username_get,
 							defaults={'gender':gender_get,
-							'age':age_get,
+							'birthday':birthday_get,
 							'blood_type':blood_type_get,
 							'emergency_number':emergency_number_get,
 							'destination':destination_get})

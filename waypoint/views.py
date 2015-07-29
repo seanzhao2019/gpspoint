@@ -1,27 +1,25 @@
 from django.shortcuts import render
-import json
 from django.http import HttpResponse
 # Create your views here.
-/*
-def userdata(request):
-    dict = {}
-    info = 'Data log save success'
-    try:
-        if request.method == 'POST':
-            req = simplejson.loads(request.raw_post_data)
-            username = req['username']
-            gender = req['gender']
-            age = req['age']
-            emergency_number = req['emergency_number']
-   except:
-        import sys
-        info = "%s || %s" % (sys.exc_info()[0], sys.exc_info()[1])
-
-    dict['message']=info
-    dict['create_at']=str(ctime())
-    json=simplejson.dumps(dict)
-    return HttpResponse(json)
-*/
+from userdata.models import Userdata
 def index(request):
-	return render(request,'index.html')
+    
+    try:
+        if request.method=='GET':
+            #print request.GET
+
+			#user_id_get=request.POST.get('user_id')
+            username_get=request.GET.get('username')
+         
+            print username_get
+            user_dict=Userdata.objects.filter(username=username_get).values()
+            print user_dict[0]
+
+            return render(request,'waypoint/index.html',{'user_dict':user_dict[0]})
+
+    except:
+        print 'something wrong'
+        
+    return render(request,'waypoint/index.html')
+
 

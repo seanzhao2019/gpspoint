@@ -19,7 +19,6 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 url(r'^index/', 'waypoint.views.index',name='index'),
-url(r'^simple/', 'waypoint.views.simple',name='simple'),
 url(r'^userdata/','userdata.views.Get_userdata',name='Get_userdata'),
 url(r'^sensordata/','userdata.views.Get_sensordata',name='Get_sensordata'),
 ]

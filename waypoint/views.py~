@@ -1,11 +1,38 @@
-#coding:utf-8
 from django.shortcuts import render
-# Create your views here.
 from django.http import HttpResponse
-
+# Create your views here.
+from userdata.models import Userdata
 def index(request):
-    return render(request,"waypoint/index.html")
+    
+    try:
+        if request.method=='GET':
+            print request.GET
+#get the querydict of post ------userdata
+#        user_id_get=request.POST.get('user_id')
+            username_get=request.GET.get('username')
+ #       gender_get=request.POST.get('gender')
+ #       age_get=request.POST.get('age') 
+ #       blood_type_get=request.POST.get('blood_type') 
+ #       emergency_number_get=request.POST.get('emergency_number')  
+ #       destination_get=request.POST.get('destination')         
+            print username_get
+            user_dict=Userdata.objects.filter(username=username_get).values()
+            print user_dict[0]
+#      update_userdata=Userdata.objects.update_or_create(user_id=user_id_get,
+  #                          username=username_get,
+  #                          defaults={'gender':gender_get,
+  #                          'age':age_get,
+  #                          'blood_type':blood_type_get,
+  #                          'emergency_number':emergency_number_get,
+  #                          'destination':destination_get})
 
-def simple(request):
-    return render(request,"waypoint/simple.html")
+
+
+            return render(request,'waypoint/index.html',{'user_dict':user_dict[0]})
+
+    except:
+        print 'something wrong'
+        
+    return render(request,'waypoint/index.html')
+
 
