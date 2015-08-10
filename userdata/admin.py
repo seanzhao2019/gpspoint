@@ -11,5 +11,5 @@ class SensordataAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Userdata,UserdataAdmin)
-#admin.site.register(Sensordata,SensordataAdmin)
+admin.site.register(Sensordata,SensordataAdmin)
 

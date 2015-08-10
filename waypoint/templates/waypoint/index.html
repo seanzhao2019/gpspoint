@@ -3,46 +3,305 @@
   <head>
     <title>User Map</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">	
     <meta charset="utf-8">
     <style>
-      html, body, #map-canvas {
-        height: 96%;
-        margin: 0px;
-        padding: 0px
-      }
+	{% load staticfiles %}
+	html, body, #map-canvas {
+	height: 100%;
+	margin: 0px;
+	
+	}
+    #map-canvas {
+        border-radius: 25px;
+        border: 2px solid #8AC007;
+	}
+    .mini-layout.fluid{
+      border-radius: 25px;
+    }
+	.mini-layout {
+	  border: 1px solid #ddd;
+	  -webkit-border-radius: 6px;
+		 -moz-border-radius: 6px;
+		      border-radius: 6px;
+	  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.075);
+		 -moz-box-shadow: 0 1px 2px rgba(0,0,0,.075);
+		      box-shadow: 0 1px 2px rgba(0,0,0,.075);
+	}
+	.mini-layout,
+	.mini-layout .mini-layout-body{
+	  height: 540px;
+      border-radius: 25px;
+    }
+
+    .mini-layout .mini-layout-sidebar{
+	  border-radius: 25px;
+	}
+
+	.mini-layout.fluid .mini-layout-sidebar {
+		height: 540px;
+		padding-left: 10px;
+    	padding-right: 10px;
+    	padding-top: 90px;
+        background-color: white;
+        border-radius: 25px;
+	    width: 10%;
+     }
+	.mini-layout {
+	  margin-bottom: 20px;
+	  
+	}
+	/*.mini-layout div {
+	  -webkit-border-radius: 3px;
+		 -moz-border-radius: 3px;
+		      border-radius: 3px;
+	}*/
+	.mini-layout .mini-layout-body {
+	  background-color: rgb(228, 232, 234);
+	  margin: 0 auto;
+	  width: 90%;
+      
+	}
+	.mini-layout.fluid .mini-layout-sidebar,
+	.mini-layout.fluid .mini-layout-header{
+	  float: left;
+	}
+
+	.mini-layout.fluid .mini-layout-body {
+	  float: right;
+      border-radius: 25px;
+	}
+
+	 .page-header{
+		width: 1905px;
+		height: 100px;
+	}
+	.container-full .row .col-lg-12 {
+		letter-spacing: 20px;
+		padding-top:10px;
+	}
+		
+	.container-full .row .col-lg-12 .title1{
+		color:#0E9074;
+	}
+	.container-full .row{
+	height:100px;
+	/*background-image: url('{% static "waypoint/clo1.jpg" %}');*/
+	background-color: #FEFEFE;
+    padding-top:1%;	
+	}
+	.container-full{
+    border-radius: 25px;
+    border: 2px solid #8AC007;
+    padding: 20px; 
+    width: 100%;
+    height: 18%;    
+}
+
+
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
-    <script>
+ <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  </head>
+
+<body> 
+{% load staticfiles %}
+
+<!--<img id='img-top' src="{% static "waypoint/star.jpg" %}" />-->
+<div class="container-full">
+	<div class="row">
+		<div class="col-lg-12 text-center v-center">
+			<h1 class="title1">北極星登山計劃</h1> 
+      	</div>
+	</div>
+</div>
+
+
+<div class="mini-layout">
+    <div class="mini-layout fluid">
+		    <div class="mini-layout-sidebar">
+			    <ul class="nav nav-pills nav-stacked">
+      				<li role="presentation"><a href="/hello">首頁</a></li>
+      				<li role="presentation" class="active"><a href="/waypoint">位置</a></li>
+      				<li role="presentation"><a href="#">結果</a></li>
+      			</ul>
+		    </div>
+		    <div class="mini-layout-body">
+			    <div id="map-canvas">
+		        </div>
+	        </div>
+    </div>
+</div>
+<script>
+var myLatLng = new google.maps.LatLng(22.996404, 120.220579);
+var image = '{% static "waypoint/Male_man.png" %}';
+var marker;
 var map;
 function initialize() {
-  map = new google.maps.Map(document.getElementById('map-canvas'), {
-    zoom: 16,
-    center: {lat: 22.996404, lng: 120.220579}
+	var mapOptions = {
+		zoom: 15,
+		center: myLatLng
+  	};
+ map = new google.maps.Map(document.getElementById('map-canvas'),
+          mapOptions);
+
+
+{% for i in lanlon %}
+	 marker = new google.maps.Marker({
+      position: new google.maps.LatLng{{i}},
+      map: map,
+	//animation: google.maps.Animation.DROP,
+      icon: image
   });
+{% for j in heart_rate %}
+var contentString = '<div id="content" >'+
+      '<div id="siteNotice" class="modal-header">'+
+      '<h4 id="firstHeading" class="firstHeading">個人體徵與位置信息</h4>'+
+      '</div>'+
+      '<div id="bodyContent" class="modal-body">'+
+      '<p><b>心率</b>:{{j}}<br>'+
+      '<b>位置</b>:{{i}}<br></p>'
+      '</div>'+
+      '</div>';
+{% endfor %}
+var infowindow = new google.maps.InfoWindow({
+      content: contentString
+  });
+  google.maps.event.addListener(marker, 'click',function() {
+    infowindow.open(map,marker);
+  });
+
+{% endfor %}
+}
+
+function toggleBounce() {
+
+  if (marker.getAnimation() != null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
-  </script>
-  </head>
-  <body>
-    <div id="map-canvas"></div>
-<div id="form">
-<form name="input" action="views.py" method="get">
-Username: <input type="text" name="username">
-<input type="submit" value="Submit">
+$(document).ready(function(){
+  $("#bt2").click(function(){
+{% for i in all_lanlon %}
+    marker = new google.maps.Marker({
+      position: new google.maps.LatLng{{i}},
+      map: map,
+	animation: google.maps.Animation.DROP,
+      icon: image
+  });
+  google.maps.event.addListener(marker, 'click', toggleBounce);
+{% endfor %}
+});
+
+$("#bt3").click(function(){
+
+var ctaLayer = new google.maps.KmlLayer({
+    url:' http://140.116.164.154:8000/static/waypoint/doc.kml'
+  });
+  ctaLayer.setMap(map);
+
+});
+});
+
+
+
+
+</script>
+<form name="input" action="views.py" method="get" class="form-inline">
+	<div class="form-group">
+		<label for="exampleInputName2">參賽者姓名</label>
+		<input type="text" class="form-control" id="exampleInputName2" name="username" placeholder="Username">
+	</div>
+	<div class="form-group">
+		<label for="exampleInputID2">參賽者編號</label>
+		<input type="text" class="form-control" id="exampleInputID2" name="user_id" placeholder="ID">
+	</div>
+
+	<button id="bt1" class="btn btn-primary " >查詢</button>
+    <button id="bt2" class="btn btn-primary " type="button">所有參賽者</button>
+    <button id="bt3" class="btn btn-primary " type="button">參賽者行徑</button>
+	<p class="bg-info">請輸入參賽者信息</p>
 </form>
-<div>  
-<div id="userdata">
-<li>
- {% for key, value in user_dict.items %}
-      {{ key }}: {{ value }}
-  {% endfor %}
-</li>
+
+<div id="userdisplay" >
+	<script>
+	function createTable_user()
+	{
+	with(document)
+	{
+	write("<table border='1' align='center' class='table table-hover'>");
+	write("<caption><b>USER INFORMATION<b></caption>")
+	write("<tr align='center'>");
+	write("<td>username</td>");
+	write("<td>user_id</td>");
+	write("<td>birthday</td>");
+	write("<td>gender</td>");
+	write("<td>blood_type</td>");
+	write("<td>emergency_number</td>");
+	write("<td>destination</td>");
+	write("</tr>");
+	{% for i in user_dict %}
+	write("<tr align='center'>");
+	write("<td>{{i.username}}</td>");
+	write("<td>{{i.user_id}}</td>");
+	write("<td>{{i.birthday}}</td>");
+	write("<td>{{i.gender}}</td>");
+	write("<td>{{i.blood_type}}</td>");
+	write("<td>{{i.emergency_number}}</td>");
+	write("<td>{{i.destination}}</td>");
+	write("</tr>");
+	{% endfor %}
+	write("</table>")
+	}
+	}
+
+    
+ 
+	</script>
+	<script>
+	if ("{{usercount}}">0)
+	{
+	document.getElementById("userinfo").innerHTML =createTable_user() ;
+	}
+     
+
+	</script>
+	<p id="userinfo"  class="bg-danger" >
+	<script type="text/javascript">
+		if ("{{usercount}}"==0)
+		{
+		document.getElementById("userinfo").innerHTML ="<b>提示</b>：請輸入參賽者姓名，點擊查詢按鈕，如果參賽者存在，即可在表中得到查詢結果；<br>"+"若表中有同名的參賽者，可根據輸入姓名和編號進階查詢。"//"<b>HINTS</b> : First , When you can enter the username , the user's information will be showed in the table if the user exists;<br>Second, if the table's entry is not only , the users have the same name .So you can choose one of them by enter the username and the id .";
+		}
+        if ("{{usercount1}}"==0)
+        {
+		document.getElementById("userinfo").innerHTML ="<b>錯誤</b>：參賽者姓名與編號無法匹配，請仔細查看參賽者的姓名與編號。"//"<b>HINTS</b> : First , When you can enter the username , the user's information will be showed in the table if the user exists;<br>Second, if the table's entry is not only , the users have the same name .So you can choose one of them by enter the username and the id .";
+		}
+    </script>
+
+	</p>
+
 </div>
+<!--<p>
+{% for i in lanlon %}
+    loca_lanlon={{i}}
+{% endfor %}
+{% for i in all_lanlon %}
+   all_loca_lanlon={{i}};
+{% endfor %}
+{% for i in heart_rate %}
+    loca_lanlon={{i}}
+{% endfor %}
+</p>-->
 </body>
 </html>
+
+
 
 
 

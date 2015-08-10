@@ -24,5 +24,5 @@ class Sensordata(models.Model):
     heart_rate=models.IntegerField(null=True)
 
 #    def __unicode__(self):
-#        return self.timestamp
+#        return self.user
 
