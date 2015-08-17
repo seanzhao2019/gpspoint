@@ -7,7 +7,7 @@ class Userdata(models.Model):
     gender = models.CharField(max_length=10)    
     birthday = models.DateField()
     blood_type=models.CharField(max_length=6)
-    emergency_number = models.IntegerField()
+    emergency_number = models.CharField(max_length=10)
     destination=models.CharField(max_length=20)
     
     class Meta:

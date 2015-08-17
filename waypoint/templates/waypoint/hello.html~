@@ -11,24 +11,53 @@
 
 <style>
 {% load staticfiles %}
-	.container-full{
+	body{
 			
 		background-image:url("{% static "waypoint/star.jpg" %}");
-		height:269px;
+		
 	}
 	.container-full .row .col-lg-12 {
-    	padding-top: 80px;
+    	padding-top: 20%;
 	}
 	.container-full .row .col-lg-12 .title1,
 	.container-full .row .col-lg-12 .lead {
 	color:#ECD8D8;	
 	}
-	
+	html,body{
+    height:100%;    
+    }
+    .container{
+    height:45%;    
+    }
+    
+    .container-full .row .col-lg-12 .form-horizontal .form-group{
+    padding-left: 30%;
+    color: #ECD8D8;   
+    }
+    .container-full .row .col-lg-12 .form-horizontal .form-group .col-sm-offset-2{
+    padding-right: 390px;
+     
+    }
+
+
+    .container-full .row .col-lg-12 .form-horizontal .form-group .col-sm-2{
+    letter-spacing: 10px;
+    padding-right: 0px;
+    }
+
 </style>  
 
 
 </head>
 <body>
+<!--<script>
+$(document).ready(function(){
+$("#btn1").click(function(){
+
+
+});
+
+</script>-->
 <div class="container-full">
 
       <div class="row">
@@ -36,9 +65,29 @@
         <div class="col-lg-12 text-center v-center">
           
           <h1 class="title1">歡迎你的到來,登山者</h1>
-          <p class="lead">這裏是北極星登山計劃,我將爲你提供服務</p>
-          
+          <p class="lead">這裏是登山者的北極星,我們將提供你登山的服務</p>
+          <p class="lead">登山者的北極星_B0031</p>
           <br>
+            <form class="form-horizontal">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">帳號</label>
+                    <div class="col-sm-3">
+                      <input type="text" class="form-control" id="inputaccount3" placeholder="帳號">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-2 control-label">密碼</label>
+                    <div class="col-sm-3">
+                      <input type="password" class="form-control" id="inputPassword3" placeholder="密碼">
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="botton" class="btn btn-default"><a href="/waypoint">登入</a></button>
+                    </div>
+                  </div>
+            </form>
           
         </div>
         
@@ -55,7 +104,7 @@
   	<br><br><br><br><br>
 
 </div> <!-- /container full -->
-
+<!--
 <div class="container">
   
   	<hr>
@@ -94,13 +143,13 @@
     </div>
   
 
-</div>
+</div>-->
 <nav class="navbar navbar-default navbar-fixed-bottom">
   <div class="container">
         <ul class="nav nav-pills">
           <li role="presentation" class="active"><a href="/hello">首頁</a></li>
           <li role="presentation"><a href="/waypoint">位置</a></li>
-          <li role="presentation"><a href="#">結果</a></li>
+          <!--<li role="presentation"><a href="#">結果</a></li>-->
         </ul>
   	
   </div>

@@ -103,16 +103,17 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
  <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/jquery.gomap-1.3.3.min.js"></script> 
   </head>
 
-<body onload='initialize()'> 
+<body> 
 {% load staticfiles %}
 
 <!--<img id='img-top' src="{% static "waypoint/star.jpg" %}" />-->
 <div class="container-full">
 	<div class="row">
 		<div class="col-lg-12 text-center v-center">
-			<h1 class="title1">北極星登山計劃</h1> 
+			<h1 class="title1">登山者的北極星_B0031</h1> 
       	</div>
 	</div>
 </div>
@@ -124,7 +125,7 @@
 			    <ul class="nav nav-pills nav-stacked">
       				<li role="presentation"><a href="/hello">首頁</a></li>
       				<li role="presentation" class="active"><a href="/waypoint">位置</a></li>
-      				<li role="presentation"><a href="#">結果</a></li>
+      				<!--<li role="presentation"><a href="#">結果</a></li>-->
       			</ul>
 		    </div>
 		    <div class="mini-layout-body">
@@ -157,10 +158,10 @@ function initialize() {
 {% for j in heart_rate %}
 var contentString = '<div id="content" >'+
       '<div id="siteNotice" class="modal-header">'+
-      '<h4 id="firstHeading" class="firstHeading">個人體徵與位置信息</h4>'+
+      '<h4 id="firstHeading" class="firstHeading">個人狀況與位置訊息</h4>'+
       '</div>'+
       '<div id="bodyContent" class="modal-body">'+
-      '<p><b>心率</b>:{{j}}<br>'+
+      '<p><b>心跳</b>:{{j}}<br>'+
       '<b>位置</b>:{{i}}<br></p>'
       '</div>'+
       '</div>';
@@ -184,25 +185,85 @@ function toggleBounce() {
   }
 }
 
-//google.maps.event.addDomListener(window, 'load', initialize);
+google.maps.event.addDomListener(window, 'load', initialize);
 
 $(document).ready(function(){
-  $("#bt2").click(function(){
+  $("#bt3").click(function(){
 {% for i in all_lanlon %}
     marker = new google.maps.Marker({
       position: new google.maps.LatLng{{i}},
       map: map,
-	animation: google.maps.Animation.DROP,
+	//animation: google.maps.Animation.DROP,
       icon: image
   });
-  google.maps.event.addListener(marker, 'click', toggleBounce);
+{% for j in all_heart_rate %}
+var contentString = '<div id="content" >'+
+      '<div id="siteNotice" class="modal-header">'+
+      '<h4 id="firstHeading" class="firstHeading">個人狀況與位置訊息</h4>'+
+      '</div>'+
+      '<div id="bodyContent" class="modal-body">'+
+      '<p><b>心跳</b>:{{j}}<br>'+
+      '<b>位置</b>:{{i}}<br></p>'
+      '</div>'+
+      '</div>';
+//alert(contentString);
+var infowindow = new google.maps.InfoWindow({
+      content: contentString
+  });
+  google.maps.event.addListener(marker, 'click',function() {
+    infowindow.open(map,marker);
+  });
 {% endfor %}
+{% endfor %}
+
+});
+$("#bt3").click(function(){
+document.getElementById("userinfo1").innerHTML =
+	"<table border='1' align='center' class='table table-condensed' >"+
+	"<caption><b>所有登山者訊息<b></caption>"+
+	"<tr align='center'>"+
+	"<td><b>姓名<b></td>"+
+//	write("<td>user_id</td>");
+	"<td><b>生日</b></td>"+
+	"<td><b>性別</b></td>"+
+//	write("<td>blood_type</td>");
+	"<td><b>電話</b></td>"+
+//	write("<td>destination</td>");
+//	"<td><b>身體狀況</b></td>"+
+	"</tr>"+
+	"{% for i in user_all %}"+
+	"<tr align='center'>"+
+	"<td>{{i.username}}</td>"+
+//	write("<td>{{i.user_id}}</td>");
+	"<td>{{i.birthday}}</td>"+
+	"<td>{{i.gender}}</td>"+
+//	write("<td>{{i.blood_type}}</td>");
+	"<td>{{i.emergency_number}}</td>"+
+//	write("<td>{{i.destination}}</td>");
+    
+ // "{% for j in all_health_info %}"+   
+ //   "if (j==2){"+
+//	"<td class='danger'>跌倒</td>"+
+ //   "}"+
+//    "else if(j==0){"+
+//    "<td class='success'>正常</td>"+
+ //   "}"+
+//    "else{"+
+//    "<td class='warning'>心率過快</td>"+
+//    "}"+
+	"</tr>"+
+"{% endfor %}"+
+//	"{% endfor %}"+
+	"</table>"
+	
 });
 
-$("#bt3").click(function(){
+$("#bt2").click(function(){
 
 var ctaLayer = new google.maps.KmlLayer({
-    url:' http://140.116.164.154:8000/static/waypoint/doc.kml'
+    url:' http://140.116.164.154:8000/static/waypoint/doc1.kml',
+url:'http://140.116.164.154:8000/static/waypoint/doc2.kml'
+url:'http://140.116.164.154:8000/static/waypoint/doc3.kml'
   });
   ctaLayer.setMap(map);
 
@@ -215,46 +276,50 @@ var ctaLayer = new google.maps.KmlLayer({
 </script>
 <form name="input" action="views.py" method="get" class="form-inline">
 	<div class="form-group">
-		<label for="exampleInputName2">參賽者姓名</label>
-		<input type="text" class="form-control" id="exampleInputName2" name="username" placeholder="Username">
+		<label for="exampleInputName2">登山者姓名</label>
+		<input type="text" class="form-control" id="exampleInputName2" name="username" placeholder="登山者姓名">
 	</div>
 	<div class="form-group">
-		<label for="exampleInputID2">參賽者編號</label>
-		<input type="text" class="form-control" id="exampleInputID2" name="user_id" placeholder="ID">
+		<label for="exampleInputID2">登山者編號</label>
+		<input type="text" class="form-control" id="exampleInputID2" name="user_id" placeholder="登山者編號">
 	</div>
-
 	<button id="bt1" class="btn btn-primary " >查詢</button>
-    <button id="bt2" class="btn btn-primary " type="button">所有參賽者</button>
-    <button id="bt3" class="btn btn-primary " type="button">參賽者行徑</button>
-	<p class="bg-info">請輸入參賽者信息</p>
 </form>
-
+    <button id="bt2" class="btn btn-primary " type="button">登山者路徑</button>
+    <button id="bt3" class="btn btn-primary " type="button">所有登山者</button>
+	<p class="bg-info">請輸入登山者訊息</p>
 <div id="userdisplay" >
 	<script>
 	function createTable_user()
 	{
 	with(document)
 	{
-	write("<table border='1' align='center' class='table table-hover'>");
-	write("<caption><b>USER INFORMATION<b></caption>")
+	write("<table border='1' align='center' class='table table-condensed' >");
+	write("<caption><b>登山者訊息<b></caption>")
 	write("<tr align='center'>");
-	write("<td>username</td>");
-	write("<td>user_id</td>");
-	write("<td>birthday</td>");
-	write("<td>gender</td>");
-	write("<td>blood_type</td>");
-	write("<td>emergency_number</td>");
-	write("<td>destination</td>");
+	write("<td><b>姓名<b></td>");
+//	write("<td>user_id</td>");
+	write("<td><b>生日</b></td>");
+	write("<td><b>性別</b></td>");
+//	write("<td>blood_type</td>");
+	write("<td><b>電話</b></td>");
+//	write("<td>destination</td>");
+	write("<td><b>身體狀況</b></td>");
 	write("</tr>");
 	{% for i in user_dict %}
 	write("<tr align='center'>");
 	write("<td>{{i.username}}</td>");
-	write("<td>{{i.user_id}}</td>");
+//	write("<td>{{i.user_id}}</td>");
 	write("<td>{{i.birthday}}</td>");
 	write("<td>{{i.gender}}</td>");
-	write("<td>{{i.blood_type}}</td>");
+//	write("<td>{{i.blood_type}}</td>");
 	write("<td>{{i.emergency_number}}</td>");
-	write("<td>{{i.destination}}</td>");
+//	write("<td>{{i.destination}}</td>");
+    if ({{health_info}}==2){
+	write("<td class='success'>正常</td>");}
+    else if({{health_info}}==0){
+    write("<td class='danger'>跌倒</td>");}
+    else{write("<td class='warning'>心率過快</td>");}
 	write("</tr>");
 	{% endfor %}
 	write("</table>")
@@ -272,19 +337,20 @@ var ctaLayer = new google.maps.KmlLayer({
      
 
 	</script>
-	<p id="userinfo"  class="bg-danger" >
+	<p id="userinfo"  class="bg-danger"></p>
+    <p id="userinfo1"> </p>
 	<script type="text/javascript">
 		if ("{{usercount}}"==0)
 		{
-		document.getElementById("userinfo").innerHTML ="<b>提示</b>：請輸入參賽者姓名，點擊查詢按鈕，如果參賽者存在，即可在表中得到查詢結果；<br>"+"若表中有同名的參賽者，可根據輸入姓名和編號進階查詢。"//"<b>HINTS</b> : First , When you can enter the username , the user's information will be showed in the table if the user exists;<br>Second, if the table's entry is not only , the users have the same name .So you can choose one of them by enter the username and the id .";
+		document.getElementById("userinfo").innerHTML ="<b>提示</b>：請輸入登山者姓名，點擊查詢按鈕，如果登山者存在，即可在表中得到查詢結果；<br>"+"若表中有同名的登山者，可根據輸入姓名和編號進階查詢。"//"<b>HINTS</b> : First , When you can enter the username , the user's information will be showed in the table if the user exists;<br>Second, if the table's entry is not only , the users have the same name .So you can choose one of them by enter the username and the id .";
 		}
         if ("{{usercount1}}"==0)
         {
-		document.getElementById("userinfo").innerHTML ="<b>錯誤</b>：參賽者姓名與編號無法匹配，請仔細查看參賽者的姓名與編號。"//"<b>HINTS</b> : First , When you can enter the username , the user's information will be showed in the table if the user exists;<br>Second, if the table's entry is not only , the users have the same name .So you can choose one of them by enter the username and the id .";
+		document.getElementById("userinfo").innerHTML ="<b>錯誤</b>：登山者姓名與編號無法匹配，請仔細查看登山者的姓名與編號。"//"<b>HINTS</b> : First , When you can enter the username , the user's information will be showed in the table if the user exists;<br>Second, if the table's entry is not only , the users have the same name .So you can choose one of them by enter the username and the id .";
 		}
     </script>
 
-	</p>
+	
 
 </div>
 <!--<p>
