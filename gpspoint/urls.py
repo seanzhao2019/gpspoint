@@ -21,6 +21,8 @@ urlpatterns = [
 url(r'^waypoint/', 'waypoint.views.index',name='index'),
 url(r'^userdata/','userdata.views.Get_userdata',name='Get_userdata'),
 url(r'^sensordata/','userdata.views.Get_sensordata',name='Get_sensordata'),
+url(r'^emergency/','userdata.views.Get_emergencydata',name='Get_emergencydata'),
 url(r'^hello/','waypoint.views.hello',name='hello'),
+url(r'^test/','waypoint.views.test',name='test'),
 url(r'^site_media/(?P<path>.*)','django.views.static.serve',{'document_root':'/home/zhao/www/gpspoint/waypoint/templates/pic'}),
 ]

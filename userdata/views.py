@@ -2,7 +2,8 @@ from django.shortcuts import render ,redirect
 import json as simplejson
 from django.views.decorators.csrf import csrf_exempt  
 from django.http import HttpResponse
-from models import Userdata , Sensordata
+from models import Userdata , Sensordata , Emergencydata
+from datetime import *
 # Create your views here.
 
 @csrf_exempt
@@ -99,6 +100,44 @@ def Get_sensordata(request):
 	    	return HttpResponse('Successful !')
 	    else:
 	    	return HttpResponse('You need transmit again !')
+
+    except:
+	print 'something wrong'
+        
+    return HttpResponse('ERROR')
+
+
+@csrf_exempt
+def Get_emergencydata(request):
+
+    try:
+    	if request.method=='POST':
+	    print request.POST
+            print datetime.now()
+            print datetime.now().hour
+#get the querydict of post ------emergencydata
+	    user_id_get=request.POST.get('user_id')
+	    timestamp_get=request.POST.get('timestamp')
+	    lan_get=request.POST.get('lan')
+	    lon_get=request.POST.get('lon')
+	    heart_rate_get=request.POST.get('heart_rate')
+            body_state_get=request.POST.get('body_state')  
+
+	    get_emergency=Emergencydata()
+	    get_emergency.user_id=user_id_get
+    	    get_emergency.timestamp=timestamp_get        
+       	    get_emergency.lan=lan_get
+       	    get_emergency.lon=lon_get
+       	    get_emergency.heart_rate=heart_rate_get
+            get_emergency.body_state=body_state_get            
+
+            get_emergency.save()
+
+#		print Emergencydata.objects.all()
+#		print Emergencydata.id
+            return HttpResponse('Successsful ! I will call 999')
+        else:
+            return HttpResponse('You need transmit again !')
 
     except:
 	print 'something wrong'

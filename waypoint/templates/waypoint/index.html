@@ -97,13 +97,20 @@
     width: 100%;
     height: 18%;    
 }
-
+    .ui-widget-header,.ui-state-default, ui-button{
+            background:#b9cd6d;
+            border: 1px solid #b9cd6d;
+            color: #FFFFFF;
+            font-weight: bold;
+         }
 
     </style>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
  <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<!--<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>-->
 <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/jquery.gomap-1.3.3.min.js"></script> 
+<link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+      <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+      <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   </head>
 
 <body> 
@@ -135,17 +142,16 @@
     </div>
 </div>
 <script>
-var myLatLng = new google.maps.LatLng(22.996404, 120.220579);
+var myLatLng ={lat: 23.8980923, lng: 121.5439799};
 var image = '{% static "waypoint/Male_man.png" %}';
 var marker;
 var map;
 function initialize() {
 	var mapOptions = {
-		zoom: 15,
+		zoom: 16,
 		center: myLatLng
   	};
- map = new google.maps.Map(document.getElementById('map-canvas'),
-          mapOptions);
+ map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
 
 
 {% for i in lanlon %}
@@ -169,7 +175,7 @@ var contentString = '<div id="content" >'+
 var infowindow = new google.maps.InfoWindow({
       content: contentString
   });
-  google.maps.event.addListener(marker, 'click',function() {
+  marker.addListener('click',function() {  //google.maps.event.
     infowindow.open(map,marker);
   });
 
@@ -185,7 +191,7 @@ function toggleBounce() {
   }
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+//google.maps.event.addDomListener(window, 'load', initialize);
 
 $(document).ready(function(){
   $("#bt3").click(function(){
@@ -240,13 +246,13 @@ document.getElementById("userinfo1").innerHTML =
 //	write("<td>{{i.blood_type}}</td>");
 	"<td>{{i.emergency_number}}</td>"+
 //	write("<td>{{i.destination}}</td>");
-    
+//"<td>{{i.pk}}</td>"+    
  // "{% for j in all_health_info %}"+   
  //   "if (j==2){"+
-//	"<td class='danger'>跌倒</td>"+
+//	"<td class='danger'>正常</td>"+
  //   "}"+
 //    "else if(j==0){"+
-//    "<td class='success'>正常</td>"+
+//    "<td class='success'>心率過慢</td>"+
  //   "}"+
 //    "else{"+
 //    "<td class='warning'>心率過快</td>"+
@@ -263,25 +269,75 @@ $("#bt2").click(function(){
 var ctaLayer = new google.maps.KmlLayer({
 //    url:'http://140.116.164.154:8000/static/waypoint/doc1.kml'
 //url:'http://140.116.164.154:8000/static/waypoint/doc2.kml'
-url:'http://140.116.164.154:8000/static/waypoint/doc3.kml'
+url:'http://140.116.164.154:8000/static/waypoint/doc4.kml'
   });
   ctaLayer.setMap(map);
 
 });
+
+
+setInterval(function(){
+$.get("/test",function(data){
+if (data==1)
+{
+    $( "#dialog1" ).dialog({
+    modal: true,
+    show: { effect: "shake", duration: 300 },
+    buttons: {
+        Ok: function() {
+            location.replace("http://140.116.164.154:8000/waypoint/views.py?username=Steven&user_id=Q12345678");       
+            //$( this ).dialog( "close" );
+        }
+      }   
+    });
+}
+else if (data==2)
+{
+    $( "#dialog2" ).dialog({
+    modal: true,
+    show: { effect: "shake", duration: 300 },
+    buttons: {
+        Ok: function() {
+            location.replace("http://140.116.164.154:8000/waypoint/views.py?username=Steven&user_id=Q12345678");
+            //$( this ).dialog( "close" );
+        }
+      }   
+    });
+}
+else if (data==3)
+{
+    $( "#dialog3" ).dialog({
+    modal: true,
+    show: { effect: "shake", duration: 300 },
+    buttons: {
+        Ok: function() {
+            location.replace("http://140.116.164.154:8000/waypoint/views.py?username=Steven&user_id=Q12345678");
+            //$( this ).dialog( "close" );
+        }
+      }   
+    });
+}
+
+})
+},10000);
+
+
 });
 
-
-
-
 </script>
+
+<script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTimltvv8ABj_ZIBgbFcdyC4IUrB6_RKM&callback=initialize">
+    </script>
+
 <form name="input" action="views.py" method="get" class="form-inline">
 	<div class="form-group">
-		<label for="exampleInputName2">登山者姓名</label>
-		<input type="text" class="form-control" id="exampleInputName2" name="username" placeholder="登山者姓名">
+		<label for="username">登山者姓名</label>
+		<input type="text" class="form-control" id="username" name="username" placeholder="登山者姓名"/>
 	</div>
 	<div class="form-group">
-		<label for="exampleInputID2">登山者編號</label>
-		<input type="text" class="form-control" id="exampleInputID2" name="user_id" placeholder="登山者編號">
+		<label for="user_id">登山者編號</label>
+		<input type="text" class="form-control" id="user_id" name="user_id" placeholder="登山者編號"/>
 	</div>
 	<button id="bt1" class="btn btn-primary " >查詢</button>
 </form>
@@ -318,7 +374,7 @@ url:'http://140.116.164.154:8000/static/waypoint/doc3.kml'
     if ({{health_info}}==2){
 	write("<td class='success'>正常</td>");}
     else if({{health_info}}==0){
-    write("<td class='danger'>跌倒</td>");}
+    write("<td class='danger'>心率過慢</td>");}
     else{write("<td class='warning'>心率過快</td>");}
 	write("</tr>");
 	{% endfor %}
@@ -364,6 +420,42 @@ url:'http://140.116.164.154:8000/static/waypoint/doc3.kml'
     loca_lanlon={{i}}
 {% endfor %}
 </p>-->
+<div id="dialog1" class="dialog" title=" 警告" style="display:none">
+    <table border='0' align='center' class='table table-condensed' >
+        <tr align='center'>
+            <td><b>登山者姓名<b></td>
+            <td><b>身體狀況</b></td>
+        </tr>
+        <tr align='center'>
+            <td>Steven</td>
+            <td class='danger'>跌倒</td>
+        </tr>
+    </table>
+</div>
+<div id="dialog2" class="dialog" title=" 警告" style="display:none">
+    <table border='0' align='center' class='table table-condensed' >
+        <tr align='center'>
+            <td><b>登山者姓名<b></td>
+            <td><b>身體狀況</b></td>
+        </tr>
+        <tr align='center'>
+            <td>Steven</td>
+            <td class='danger'>心率過快</td>
+        </tr>
+    </table>
+</div>
+<div id="dialog3" class="dialog" title=" 警告" style="display:none">
+    <table border='0' align='center' class='table table-condensed' >
+        <tr align='center'>
+            <td><b>登山者姓名<b></td>
+            <td><b>身體狀況</b></td>
+        </tr>
+        <tr align='center'>
+            <td>Steven</td>
+            <td class='danger'>心率過慢</td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>
 
